@@ -10,8 +10,17 @@ class GitCommand {
     }
 
     //Command: git status
-    // Paste the codes you already did from the "Git Out Bug!" assignment
     // status(){}
+    status(){        
+        let message = `You have ${Object.keys(this.working_directory.new_changes).length} change/s.\n`;
+
+        for (let i = 0; i < Object.keys(this.working_directory.files).length; i++) {
+            if(i == Object.keys(this.working_directory.files).length - 1) message += `${Object.keys(this.working_directory.files)[i]}`
+            else message += `${Object.keys(this.working_directory.files)[i]}\n`;
+        }
+        
+        return message;
+    }
 
     //Command: git add <filename/file directory/wildcard> 
     add(path_file){
@@ -22,8 +31,14 @@ class GitCommand {
             delete modified_files[path_file];
         }
         /*
-            Create logic here then run unit testing. Make sure that they all pass before sending PR.
+            Create logic here and run unit testing.
         */
+        else if(path_file === ".") {
+            for (let file of Object.keys(modified_files)) {
+                this.staging.push(file);
+                delete modified_files[file];
+            }
+        }
         else{
             return `Failed to add ${path_file}! File is not modified or missing.`;
         }
