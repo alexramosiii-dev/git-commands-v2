@@ -10,7 +10,6 @@ class GitCommand {
     }
 
     //Command: git status
-    // Paste the codes you already did from the "Git Out Bug!" assignment
     // status(){}
     status(){
         let files = this.working_directory.new_changes;
@@ -33,7 +32,7 @@ class GitCommand {
             delete modified_files[path_file];
         }
         /*
-            Create logic here then run unit testing. Make sure that they all pass before sending PR.
+            Create logic here and run unit testing.
         */
         else if (path_file === "*") {
             for (let file of Object.keys(modified_files)) {
@@ -42,6 +41,12 @@ class GitCommand {
                 }else {
                     delete modified_files[file];
                 }
+            }
+        }
+        else if(path_file === ".") {
+            for (let file of Object.keys(modified_files)) {
+                this.staging.push(file);
+                delete modified_files[file];
             }
         }
         else{
