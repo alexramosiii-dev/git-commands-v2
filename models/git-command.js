@@ -11,12 +11,13 @@ class GitCommand {
 
     //Command: git status
     // status(){}
-    status(){        
-        let message = `You have ${Object.keys(this.working_directory.new_changes).length} change/s.\n`;
+    status(){
+        let files = this.working_directory.new_changes;
+        let message = `You have ${Object.keys(files).length} change/s.\n`;
 
-        for (let i = 0; i < Object.keys(this.working_directory.files).length; i++) {
-            if(i == Object.keys(this.working_directory.files).length - 1) message += `${Object.keys(this.working_directory.files)[i]}`
-            else message += `${Object.keys(this.working_directory.files)[i]}\n`;
+        for (let i = 0; i < Object.keys(files).length; i++) {
+            if(i == Object.keys(files).length - 1) message += `${Object.keys(files)[i]}`
+            else message += `${Object.keys(files)[i]}\n`;
         }
         
         return message;
@@ -33,6 +34,15 @@ class GitCommand {
         /*
             Create logic here and run unit testing.
         */
+        else if (path_file === "*") {
+            for (let file of Object.keys(modified_files)) {
+                if(file.startsWith(".github/")) {
+                    this.staging.push(modified_files[file]);
+                }else {
+                    delete modified_files[file];
+                }
+            }
+        }
         else if(path_file === ".") {
             for (let file of Object.keys(modified_files)) {
                 this.staging.push(file);
